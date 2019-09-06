@@ -8,5 +8,6 @@ namespace MyLeasing.Web.Data.Entities
         public User User { get; set; }
         public ICollection<Property> Properties { get; set; }
         public ICollection<Contract> Contracts { get; set; }
+        public string Address { get; internal set; }
     }
 }
