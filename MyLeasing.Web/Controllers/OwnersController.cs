@@ -132,7 +132,7 @@ namespace MyLeasing.Web.Controllers
                     Owner owner = new Owner
                     {
                         Properties = new List<Property>(),
-                        Contracts = new List<Contract>(),
+                        Contracts  = new List<Contract>(),
                         User = user
                     };
 
@@ -153,13 +153,13 @@ namespace MyLeasing.Web.Controllers
         {
             User user = new User
             {
-                Address = model.Address,
-                Document = model.Document,
-                Email = model.Username,
-                FirstName = model.FirstName,
-                LastName = model.LastName,
+                Address     = model.Address,
+                Document    = model.Document,
+                Email       = model.Username,
+                FirstName   = model.FirstName,
+                LastName    = model.LastName,
                 PhoneNumber = model.PhoneNumber,
-                UserName = model.Username,
+                UserName    = model.Username,
             };
 
             IdentityResult result = await _userHelper.AddUserAsync(user, model.Password);
