@@ -1,8 +1,23 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewBag.Title = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<style>
+    .jumbotron {
+        margin: 15px 30px 0px 30px;
+        border-radius: 10px;
+        background: linear-gradient(rgba(0, 0, 250, 0.30), rgba(125, 250, 250, 0.45)), url('../../wwwroot/images/logocpa_3b.png');
+        background-repeat: no-repeat;
+        background-size: initial;
+        background-attachment: fixed;
+        color: black !important;
+        height: 400px;
+    }
+</style>
+
+<div class="jumbotron jumbotron-fluid">
+    <div class="container">
+        <h1 class="display-4" style="margin-top:250px">Sistema de Ventas de Viviendas</h1>
+        <p class="lead"></p>
+    </div>
 </div>

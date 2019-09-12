@@ -7,20 +7,24 @@
 
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
         <link rel="stylesheet" href="~/css/site.css" />
-        <link href="~/css/Menu.css" rel="stylesheet" />
+
+        <link href="~/css/EstiloNavbar.css" rel="stylesheet" />
     </environment>
     <environment exclude="Development">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" />
+              <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
               asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
-        <link href="~/css/Menu.css" rel="stylesheet" />
+
+        <link href="~/css/EstiloNavbar.css" rel="stylesheet" />
     </environment>
 </head>
 <body>
-    <nav class="navbar my-navbar">
-        <div class="container">
+    <nav class="my-navbar navbar-fixed-top">
+        <div class="container-fluid">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="sr-only">Toggle navigation</span>
@@ -35,30 +39,30 @@
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
-                    @if (User.Identity.IsAuthenticated && User.IsInRole("Manager"))
-                    {
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">File<b class="caret"></b></a>
-                            <ul class="dropdown-menu">
-                                <li><a asp-area="" asp-controller="Managers" asp-action="Index">Managers</a></li>
-                                <li><a asp-area="" asp-controller="PropertyTypes" asp-action="Index">Property Types</a></li>
-                            </ul>
-                        </li>
-                        <li><a asp-area="" asp-controller="Owners" asp-action="Index">Owners</a></li>
-                        <li><a asp-area="" asp-controller="Lessees" asp-action="Index">Lessees</a></li>
-                        <li><a asp-area="" asp-controller="Contracts" asp-action="Index">Contracts</a></li>
-                        <li><a asp-area="" asp-controller="Properties" asp-action="Index">Properties</a></li>
-                    }
+                    @*@if (User.Identity.IsAuthenticated && User.IsInRole("Manager"))
+                    {*@
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">File<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a asp-area="" asp-controller="Managers" asp-action="Index">Managers</a></li>
+                            <li><a asp-area="" asp-controller="PropertyTypes" asp-action="Index">Property Types</a></li>
+                        </ul>
+                    </li>
+                    <li><a asp-area="" asp-controller="Owners" asp-action="Index">Owners</a></li>
+                    <li><a asp-area="" asp-controller="Lessees" asp-action="Index">Lessees</a></li>
+                    <li><a asp-area="" asp-controller="Contracts" asp-action="Index">Contracts</a></li>
+                    <li><a asp-area="" asp-controller="Properties" asp-action="Index">Properties</a></li>
+                    @*  *@}
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <li><a asp-area="" asp-controller="Account" asp-action="ChangeUser">@User.Identity.Name</a></li>
-                        <li><a asp-area="" asp-controller="Account" asp-action="Logout">Logout</a></li>
+                    <li><a asp-area="" asp-controller="Account" asp-action="ChangeUser">@User.Identity.Name</a></li>
+                    <li><a asp-area="" asp-controller="Account" asp-action="Logout">Logout</a></li>
                     }
                     else
                     {
-                        <li><a asp-area="" asp-controller="Account" asp-action="Login">Login</a></li>
+                    <li><a asp-area="" asp-controller="Account" asp-action="Login">Login</a></li>
                     }
                 </ul>
             </div>
@@ -67,7 +71,7 @@
 
     <partial name="_CookieConsentPartial" />
 
-    <div class="container body-content">
+    <div class="container-fluid body-content">
         @RenderBody()
         <hr />
         <footer>

@@ -64,9 +64,14 @@
                     @Html.DisplayFor(modelItem => item.Contracts.Count)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">Edit</a> |
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning fa fa-plus-square"> Edit</a> |
                     <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">Details</a> |
                     <button data-id="@item.Id" class="btn btn-danger deleteItem" data-toggle="modal" data-target="#deleteDialog">Delete</button>
+
+                    <a href="@Url.Action("Edit", "Owners",new { id = item.Id })" class="btn btn-warning">
+                        <i class="fa fa-plus-square"></i>
+                        Edit
+                    </a>
                 </td>
             </tr>
         }
