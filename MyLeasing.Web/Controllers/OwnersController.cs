@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace MyLeasing.Web.Controllers
 {
-    //[Authorize(Roles = "Manager")]
+    [Authorize(Roles = "Manager")]
     public class OwnersController : Controller
     {
         private readonly DataContext _dataContext;
