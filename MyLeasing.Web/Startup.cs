@@ -40,13 +40,17 @@ namespace MyLeasing.Web
 
             services.AddIdentity<User, IdentityRole>(cfg =>
             {
-                cfg.User.RequireUniqueEmail = true;
-                cfg.Password.RequireDigit = false;
-                cfg.Password.RequiredUniqueChars = 0;
-                cfg.Password.RequireLowercase = false;
-                cfg.Password.RequireNonAlphanumeric = false;
-                cfg.Password.RequireUppercase = false;
-            }).AddEntityFrameworkStores<DataContext>();
+                cfg.Tokens.AuthenticatorTokenProvider = TokenOptions.DefaultAuthenticatorProvider;
+                cfg.SignIn.RequireConfirmedEmail      = true;
+                cfg.User.RequireUniqueEmail           = true;
+                cfg.Password.RequireDigit             = false;
+                cfg.Password.RequiredUniqueChars      = 0;
+                cfg.Password.RequireLowercase         = false;
+                cfg.Password.RequireNonAlphanumeric   = false;
+                cfg.Password.RequireUppercase         = false;
+            })
+            .AddDefaultTokenProviders()
+            .AddEntityFrameworkStores<DataContext>();
 
 
             services.AddDbContext<DataContext>(cfg =>
