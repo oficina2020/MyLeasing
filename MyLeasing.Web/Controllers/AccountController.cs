@@ -17,9 +17,9 @@ namespace MyLeasing.Web.Controllers
 
         public AccountController(IUserHelper userHelper, ICombosHelpers combosHelpers, DataContext dataContext)
         {
-            _userHelper    = userHelper;
+            _userHelper = userHelper;
             _combosHelpers = combosHelpers;
-            _dataContext   = dataContext;
+            _dataContext = dataContext;
         }
 
         [HttpGet]
@@ -68,39 +68,39 @@ namespace MyLeasing.Web.Controllers
 
         public IActionResult Register()
         {
-            var view = new AddUserViewModel
+            var modelo = new AddUserViewModel
             {
                 Roles = _combosHelpers.GetComboRoles()
             };
 
-            return View(view);
+            return View(modelo);
         }
-        
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(AddUserViewModel view)
+        public async Task<IActionResult> Register(AddUserViewModel modelo)
         {
             if (ModelState.IsValid)
             {
                 var role = "Owner";
-                if (view.RoleId == 1)
+                if (modelo.RoleId == 1)
                 {
                     role = "Lessee";
                 }
 
-                var user = await _userHelper.AddUser(view, role);
+                var user = await _userHelper.AddUser(modelo, role);
                 if (user == null)
                 {
                     ModelState.AddModelError(string.Empty, "This email is already used.");
-                    return View(view);
+                    return View(modelo);
                 }
 
-                if (view.RoleId == 1)
+                if (modelo.RoleId == 1)
                 {
                     var lessee = new Lessee
                     {
                         Contracts = new List<Contract>(),
-                        User      = user
+                        User = user
                     };
 
                     _dataContext.Lessees.Add(lessee);
@@ -121,9 +121,9 @@ namespace MyLeasing.Web.Controllers
 
                 var loginViewModel = new LoginViewModel
                 {
-                    Password   = view.Password,
+                    Password   = modelo.Password,
                     RememberMe = false,
-                    Username   = view.Username
+                    Username   = modelo.Username
                 };
 
                 var result2 = await _userHelper.LoginAsync(loginViewModel);
@@ -134,7 +134,9 @@ namespace MyLeasing.Web.Controllers
                 }
             }
 
-            return View(view);
+            modelo.Roles = _combosHelpers.GetComboRoles();
+
+            return View(modelo);
         }
 
 

@@ -116,6 +116,7 @@ namespace MyLeasing.Web.Controllers
         [HttpGet]
         public IActionResult Create()
         {
+            var view = new AddUserViewModel { RoleId = 2 };
             return View();
         }
 
