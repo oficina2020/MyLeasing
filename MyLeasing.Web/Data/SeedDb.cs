@@ -159,16 +159,16 @@ namespace MyLeasing.Web.Data
         {
             _context.Properties.Add(new Property
             {
-                Address = address,
+                Address       = address,
                 HasParkingLot = true,
-                IsAvailable = true,
-                Neighborhood = neighborhood,
-                Owner = owner,
-                Price = price,
-                PropertyType = propertyType,
-                Rooms = rooms,
-                SquareMeters = squareMeters,
-                Stratum = stratum
+                IsAvailable   = true,
+                Neighborhood  = neighborhood,
+                Owner         = owner,
+                Price         = price,
+                PropertyType  = propertyType,
+                Rooms         = rooms,
+                SquareMeters  = squareMeters,
+                Stratum       = stratum
             });
         }
     }
