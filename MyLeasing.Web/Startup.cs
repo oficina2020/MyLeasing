@@ -63,8 +63,9 @@ namespace MyLeasing.Web
             services.AddScoped<IConverterHelper, ConverterHelper>();
             services.AddScoped<ICombosHelpers, CombosHelpers>();
             services.AddScoped<IImageHelper, ImageHelper>();
+            services.AddScoped<IMailHelper, MailHelper>();
 
-            
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 

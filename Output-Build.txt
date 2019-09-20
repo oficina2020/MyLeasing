@@ -1,0 +1,15 @@
+﻿1>------ Build started: Project: MyLeasing.Web, Configuration: Release Any CPU ------
+1>MyLeasing.Web -> C:\Projects\MyLeasing\MyLeasing.Web\bin\Release\netcoreapp2.1\MyLeasing.Web.dll
+1>MyLeasing.Web -> C:\Projects\MyLeasing\MyLeasing.Web\bin\Release\netcoreapp2.1\MyLeasing.Web.Views.dll
+2>------ Publish started: Project: MyLeasing.Web, Configuration: Release Any CPU ------
+MyLeasing.Web -> C:\Projects\MyLeasing\MyLeasing.Web\bin\Release\netcoreapp2.1\MyLeasing.Web.dll
+MyLeasing.Web -> C:\Projects\MyLeasing\MyLeasing.Web\bin\Release\netcoreapp2.1\MyLeasing.Web.Views.dll
+MyLeasing.Web -> C:\Projects\MyLeasing\MyLeasing.Web\obj\Release\netcoreapp2.1\PubTmp\Out\
+Updating file (appkristel\MyLeasing.Web.deps.json).
+Updating file (appkristel\MyLeasing.Web.runtimeconfig.json).
+Updating file (appkristel\web.config).
+Publish Succeeded.
+Web App was published successfully https://appkristel.azurewebsites.net/
+========== Build: 1 succeeded, 0 failed, 0 up-to-date, 0 skipped ==========
+========== Publish: 1 succeeded, 0 failed, 0 skipped ==========
+Checking if your application will run successfully... Done

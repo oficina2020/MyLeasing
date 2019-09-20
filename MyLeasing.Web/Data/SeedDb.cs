@@ -44,12 +44,12 @@ namespace MyLeasing.Web.Data
                 _context.Contracts.Add(new Contract
                 {
                     StartDate = DateTime.Today,
-                    EndDate = DateTime.Today.AddYears(1),
-                    IsActive = true,
-                    Lessee = lessee,
-                    Owner = owner,
-                    Price = 800000M,
-                    Property = property,
+                    EndDate   = DateTime.Today.AddYears(1),
+                    IsActive  = true,
+                    Lessee    = lessee,
+                    Owner     = owner,
+                    Price     = 800000M,
+                    Property  = property,
                     Remarks = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris nec iaculis ex. " +
                     "Nullam gravida nunc eleifend, placerat tellus a, eleifend metus. Phasellus id suscipit magna. " +
                     "Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nullam " +
@@ -87,17 +87,21 @@ namespace MyLeasing.Web.Data
             {
                 user = new User
                 {
-                    Address = address,
-                    Document = document,
-                    Email = email,
-                    FirstName = firstName,
-                    LastName = lastName,
+                    Address     = address,
+                    Document    = document,
+                    Email       = email,
+                    FirstName   = firstName,
+                    LastName    = lastName,
                     PhoneNumber = phone,
-                    UserName = email,
+                    UserName    = email,
                 };
 
                 await _userHelper.AddUserAsync(user, "123456");
                 await _userHelper.AddUserToRoleAsync(user, role);
+
+                var token = await _userHelper.GenerateEmailConfirmationTokenAsync(user);
+                await _userHelper.ConfirmEmailAsync(user, token);
+
             }
 
             return user;
