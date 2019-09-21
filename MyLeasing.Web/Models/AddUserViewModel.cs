@@ -60,6 +60,5 @@ namespace MyLeasing.Web.Models
 
         public IEnumerable<SelectListItem> Roles { get; set; }
 
-
     }
 }
