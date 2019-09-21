@@ -118,7 +118,7 @@ namespace MyLeasing.Web.Controllers
                     };
 
                     _dataContext.Lessees.Add(lessee);
-                    await _dataContext.SaveChangesAsync();
+                    //await _dataContext.SaveChangesAsync();
                 }
                 else
                 {
@@ -130,8 +130,10 @@ namespace MyLeasing.Web.Controllers
                     };
 
                     _dataContext.Owners.Add(owner);
-                    await _dataContext.SaveChangesAsync();
+                    //await _dataContext.SaveChangesAsync();
                 }
+
+                await _dataContext.SaveChangesAsync();
 
                 var myToken = await _userHelper.GenerateEmailConfirmationTokenAsync(user);
                 var tokenLink = Url.Action("ConfirmEmail", "Account", new

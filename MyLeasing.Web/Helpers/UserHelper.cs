@@ -84,13 +84,13 @@ namespace MyLeasing.Web.Helpers
         {
             var user = new User
             {
-                Address     = view.Address,
-                Document    = view.Document,
-                Email       = view.Username,
-                FirstName   = view.FirstName,
-                LastName    = view.LastName,
+                Address = view.Address,
+                Document = view.Document,
+                Email = view.Username,
+                FirstName = view.FirstName,
+                LastName = view.LastName,
                 PhoneNumber = view.PhoneNumber,
-                UserName    = view.Username
+                UserName = view.Username
             };
 
             var result = await AddUserAsync(user, view.Password);

@@ -29,12 +29,12 @@ namespace MyLeasing.Web.Controllers
             IImageHelper imageHelper,
             IMailHelper mailHelper)
         {
-            _dataContext = dataContext;
-            _userHelper = userHelper;
-            _combosHelpers = combosHelpers;
+            _dataContext     = dataContext;
+            _userHelper      = userHelper;
+            _combosHelpers   = combosHelpers;
             _converterHelper = converterHelper;
-            _imageHelper = imageHelper;
-            _mailHelper = mailHelper;
+            _imageHelper     = imageHelper;
+            _mailHelper      = mailHelper;
         }
 
         [HttpGet]

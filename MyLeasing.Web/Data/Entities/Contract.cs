@@ -38,11 +38,6 @@ namespace MyLeasing.Web.Data.Entities
 
         public DateTime StartDateLocal => StartDate.ToLocalTime();
 
-        private int Required(object p)
-        {
-            throw new NotImplementedException();
-        }
-
         [Display(Name = "Start Date")]
         [Required(ErrorMessage = "The field {0} is mandatory.")]
         [DataType(DataType.DateTime)]

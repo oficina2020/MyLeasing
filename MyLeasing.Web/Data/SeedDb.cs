@@ -1,8 +1,10 @@
-﻿using MyLeasing.Web.Data.Entities;
-using MyLeasing.Web.Helpers;
+﻿
+
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using MyLeasing.Web.Data.Entities;
+using MyLeasing.Web.Helpers;
 
 namespace MyLeasing.Web.Data
 {
@@ -11,7 +13,9 @@ namespace MyLeasing.Web.Data
         private readonly DataContext _context;
         private readonly IUserHelper _userHelper;
 
-        public SeedDb(DataContext context, IUserHelper userHelper)
+        public SeedDb(
+            DataContext context,
+            IUserHelper userHelper)
         {
             _context = context;
             _userHelper = userHelper;
@@ -21,10 +25,9 @@ namespace MyLeasing.Web.Data
         {
             await _context.Database.EnsureCreatedAsync();
             await CheckRoles();
-            User manager    = await CheckUserAsync("1010", "Juan", "Zuluaga", "jzuluaga55@gmail.com", "350 634 2747", "Calle Luna Calle Sol", "Manager");
-            User owner      = await CheckUserAsync("2020", "Juan", "Zuluaga", "jzuluaga55@hotmail.com", "350 634 2747", "Calle Luna Calle Sol", "Owner");
-            User lessee     = await CheckUserAsync("3030", "Juan", "Zuluaga", "carlos.zuluaga@globant.com", "350 634 2747", "Calle Luna Calle Sol", "Lessee");
-
+            var manager = await CheckUserAsync("1010", "Juan", "Zuluaga", "jzuluaga55@gmail.com", "350 634 2747", "Calle Luna Calle Sol", "Manager");
+            var owner = await CheckUserAsync("2020", "Juan", "Zuluaga", "jzuluaga55@hotmail.com", "350 634 2747", "Calle Luna Calle Sol", "Owner");
+            var lessee = await CheckUserAsync("3030", "Juan", "Zuluaga", "carlos.zuluaga@globant.com", "350 634 2747", "Calle Luna Calle Sol", "Lessee");
             await CheckPropertyTypesAsync();
             await CheckManagerAsync(manager);
             await CheckOwnersAsync(owner);
@@ -35,29 +38,29 @@ namespace MyLeasing.Web.Data
 
         private async Task CheckContractsAsync()
         {
-            Owner owner = _context.Owners.FirstOrDefault();
-            Lessee lessee = _context.Lessees.FirstOrDefault();
-            Property property = _context.Properties.FirstOrDefault();
-
+            var owner = _context.Owners.FirstOrDefault();
+            var lessee = _context.Lessees.FirstOrDefault();
+            var property = _context.Properties.FirstOrDefault();
             if (!_context.Contracts.Any())
             {
                 _context.Contracts.Add(new Contract
                 {
                     StartDate = DateTime.Today,
-                    EndDate   = DateTime.Today.AddYears(1),
-                    IsActive  = true,
-                    Lessee    = lessee,
-                    Owner     = owner,
-                    Price     = 800000M,
-                    Property  = property,
-                    Remarks = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris nec iaculis ex. " +
-                    "Nullam gravida nunc eleifend, placerat tellus a, eleifend metus. Phasellus id suscipit magna. " +
-                    "Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nullam " +
-                    "volutpat ultrices ex, sed cursus sem tincidunt ut. Nullam metus lorem, convallis quis dignissim " +
-                    "quis, porttitor quis leo. In hac habitasse platea dictumst. Duis pharetra sed arcu ac viverra. " +
-                    "Proin dapibus lobortis commodo. Vivamus non commodo est, ac vehicula augue. Nam enim felis, " +
-                    "rutrum in tortor sit amet, efficitur hendrerit augue. Cras pellentesque nisl eu maximus tempor. " +
-                    "Curabitur eu efficitur metus. Sed ultricies urna et auctor commodo."
+                    EndDate = DateTime.Today.AddYears(1),
+                    IsActive = true,
+                    Lessee = lessee,
+                    Owner = owner,
+                    Price = 800000M,
+                    Property = property,
+                    Remarks = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
+                    "Mauris nec iaculis ex. Nullam gravida nunc eleifend, placerat tellus a, " +
+                    "eleifend metus. Phasellus id suscipit magna. Orci varius natoque penatibus et " +
+                    "magnis dis parturient montes, nascetur ridiculus mus. Nullam volutpat ultrices ex, " +
+                    "sed cursus sem tincidunt ut. Nullam metus lorem, convallis quis dignissim quis, " +
+                    "porttitor quis leo. In hac habitasse platea dictumst. Duis pharetra sed arcu ac " +
+                    "viverra. Proin dapibus lobortis commodo. Vivamus non commodo est, ac vehicula augue. " +
+                    "Nam enim felis, rutrum in tortor sit amet, efficitur hendrerit augue. Cras pellentesque " +
+                    "nisl eu maximus tempor. Curabitur eu efficitur metus. Sed ultricies urna et auctor commodo."
                 });
 
                 await _context.SaveChangesAsync();
@@ -74,26 +77,26 @@ namespace MyLeasing.Web.Data
         }
 
         private async Task<User> CheckUserAsync(
-                        string address,
-                        string document,
-                        string email,
-                        string firstName,
-                        string lastName,
-                        string phone,
-                        string role)
+            string document,
+            string firstName,
+            string lastName,
+            string email,
+            string phone,
+            string address,
+            string role)
         {
-            User user = await _userHelper.GetUserByEmailAsync(email);
+            var user = await _userHelper.GetUserByEmailAsync(email);
             if (user == null)
             {
                 user = new User
                 {
-                    Address     = address,
-                    Document    = document,
-                    Email       = email,
-                    FirstName   = firstName,
-                    LastName    = lastName,
+                    FirstName = firstName,
+                    LastName = lastName,
+                    Email = email,
+                    UserName = email,
                     PhoneNumber = phone,
-                    UserName    = email,
+                    Address = address,
+                    Document = document
                 };
 
                 await _userHelper.AddUserAsync(user, "123456");
@@ -101,7 +104,6 @@ namespace MyLeasing.Web.Data
 
                 var token = await _userHelper.GenerateEmailConfirmationTokenAsync(user);
                 await _userHelper.ConfirmEmailAsync(user, token);
-
             }
 
             return user;
@@ -125,8 +127,8 @@ namespace MyLeasing.Web.Data
 
         private async Task CheckPropertiesAsync()
         {
-            Owner owner = _context.Owners.FirstOrDefault();
-            PropertyType propertyType = _context.PropertyTypes.FirstOrDefault();
+            var owner = _context.Owners.FirstOrDefault();
+            var propertyType = _context.PropertyTypes.FirstOrDefault();
             if (!_context.Properties.Any())
             {
                 AddProperty("Calle 43 #23 32", "Poblado", owner, propertyType, 800000M, 2, 72, 4);
@@ -159,16 +161,16 @@ namespace MyLeasing.Web.Data
         {
             _context.Properties.Add(new Property
             {
-                Address       = address,
+                Address = address,
                 HasParkingLot = true,
-                IsAvailable   = true,
-                Neighborhood  = neighborhood,
-                Owner         = owner,
-                Price         = price,
-                PropertyType  = propertyType,
-                Rooms         = rooms,
-                SquareMeters  = squareMeters,
-                Stratum       = stratum
+                IsAvailable = true,
+                Neighborhood = neighborhood,
+                Owner = owner,
+                Price = price,
+                PropertyType = propertyType,
+                Rooms = rooms,
+                SquareMeters = squareMeters,
+                Stratum = stratum
             });
         }
     }
