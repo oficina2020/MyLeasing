@@ -15,5 +15,6 @@ namespace MyLeasing.Web.Data.Entities
 
         public Property Property { get; set; }
 
+
     }
 }
