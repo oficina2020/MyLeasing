@@ -90,13 +90,13 @@ namespace MyLeasing.Web.Data
             {
                 user = new User
                 {
-                    FirstName = firstName,
-                    LastName = lastName,
-                    Email = email,
-                    UserName = email,
+                    FirstName   = firstName,
+                    LastName    = lastName,
+                    Email       = email,
+                    UserName    = email,
                     PhoneNumber = phone,
-                    Address = address,
-                    Document = document
+                    Address     = address,
+                    Document    = document
                 };
 
                 await _userHelper.AddUserAsync(user, "123456");
