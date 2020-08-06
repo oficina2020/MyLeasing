@@ -63,7 +63,7 @@ namespace MyLeasing.Web.Data.Entities
             {
                 if (PropertyImages == null || PropertyImages.Count == 0)
                 {
-                    return "https://myleasing.azurewebsites.net/images/Properties/noImage.png";
+                    return "https://cdn.pixabay.com/photo/2019/10/06/10/03/team-4529717_1280.jpg";
                 }
 
                 return PropertyImages.FirstOrDefault().ImageUrl;

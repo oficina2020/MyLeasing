@@ -1,11 +1,11 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MyLeasing.Web.Data;
 using MyLeasing.Web.Data.Entities;
 using MyLeasing.Web.Helpers;
 using MyLeasing.Web.Models;
+using System.Threading.Tasks;
 
 namespace MyLeasing.Web.Controllers
 {
@@ -38,7 +38,7 @@ namespace MyLeasing.Web.Controllers
                 return NotFound();
             }
 
-            var manager = await _dataContext.Managers.Include(o => o.User).FirstOrDefaultAsync(o => o.Id == id.Value);
+            Manager manager = await _dataContext.Managers.Include(o => o.User).FirstOrDefaultAsync(o => o.Id == id.Value);
 
             if (manager == null)
             {
@@ -59,23 +59,23 @@ namespace MyLeasing.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await _userHelper.AddUser(view, "Manager");
+                User user = await _userHelper.AddUser(view, "Manager");
                 if (user == null)
                 {
                     ModelState.AddModelError(string.Empty, "This email is already used.");
                     return View(view);
                 }
 
-                var manager = new Manager { User = user };
+                Manager manager = new Manager { User = user };
 
                 _dataContext.Managers.Add(manager);
                 await _dataContext.SaveChangesAsync();
 
-                var myToken = await _userHelper.GenerateEmailConfirmationTokenAsync(user);
-                var tokenLink = Url.Action("ConfirmEmail", "Account", new
+                string myToken = await _userHelper.GenerateEmailConfirmationTokenAsync(user);
+                string tokenLink = Url.Action("ConfirmEmail", "Account", new
                 {
                     userid = user.Id,
-                    token = myToken
+                    token  = myToken
                 }, protocol: HttpContext.Request.Scheme);
 
                 _mailHelper.SendMail(view.Username, "Email confirmation", $"<h1>Email Confirmation</h1>" +
@@ -95,7 +95,7 @@ namespace MyLeasing.Web.Controllers
                 return NotFound();
             }
 
-            var manager = await _dataContext.Managers
+            Manager manager = await _dataContext.Managers
                 .Include(m => m.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (manager == null)
@@ -103,7 +103,7 @@ namespace MyLeasing.Web.Controllers
                 return NotFound();
             }
 
-            var view = new EditUserViewModel
+            EditUserViewModel view = new EditUserViewModel
             {
                 Address     = manager.User.Address,
                 Document    = manager.User.Document,
@@ -122,7 +122,7 @@ namespace MyLeasing.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var manager = await _dataContext.Managers
+                Manager manager = await _dataContext.Managers
                     .Include(m => m.User)
                     .FirstOrDefaultAsync(o => o.Id == view.Id);
 
@@ -146,7 +146,7 @@ namespace MyLeasing.Web.Controllers
                 return NotFound();
             }
 
-            var manager = await _dataContext.Managers
+            Manager manager = await _dataContext.Managers
                 .Include(m => m.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (manager == null)

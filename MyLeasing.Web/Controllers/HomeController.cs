@@ -1,16 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MyLeasing.Web.Data;
 using MyLeasing.Web.Data.Entities;
 using MyLeasing.Web.Helpers;
 using MyLeasing.Web.Models;
+using System;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace MyLeasing.Web.Controllers
 {
@@ -23,8 +22,8 @@ namespace MyLeasing.Web.Controllers
 
         public HomeController(DataContext dataContext, ICombosHelpers combosHelpers, IConverterHelper converterHelper)
         {
-            _dataContext     = dataContext;
-            _combosHelpers   = combosHelpers;
+            _dataContext = dataContext;
+            _combosHelpers = combosHelpers;
             _converterHelper = converterHelper;
         }
 
@@ -80,7 +79,7 @@ namespace MyLeasing.Web.Controllers
                 return NotFound();
             }
 
-            var property = await _dataContext.Properties
+            Property property = await _dataContext.Properties
                 .Include(o => o.PropertyType)
                 .Include(p => p.PropertyImages)
                 .FirstOrDefaultAsync(m => m.Id == id);
@@ -95,7 +94,7 @@ namespace MyLeasing.Web.Controllers
         [Authorize(Roles = "Owner")]
         public async Task<IActionResult> MyProperties()
         {
-            var owner = await _dataContext.Owners
+            Owner owner = await _dataContext.Owners
                 .Include(o => o.User)
                 .Include(o => o.Contracts)
                 .Include(o => o.Properties)
@@ -119,16 +118,16 @@ namespace MyLeasing.Web.Controllers
                 return NotFound();
             }
 
-            var owner = await _dataContext.Owners.FindAsync(id.Value);
+            Owner owner = await _dataContext.Owners.FindAsync(id.Value);
 
             if (owner == null)
             {
                 return NotFound();
             }
 
-            var model  = new PropertyViewModel
+            PropertyViewModel model = new PropertyViewModel
             {
-                OwnerId = owner.Id,
+                OwnerId       = owner.Id,
                 PropertyTypes = _combosHelpers.GetComboPropertyTypes()
             };
 
@@ -140,7 +139,7 @@ namespace MyLeasing.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var property = await _converterHelper.toPropertyAsync(model, true);
+                Property property = await _converterHelper.toPropertyAsync(model, true);
                 _dataContext.Properties.Add(property);
                 await _dataContext.SaveChangesAsync();
                 return RedirectToAction(nameof(MyProperties));
@@ -158,7 +157,7 @@ namespace MyLeasing.Web.Controllers
                 return NotFound();
             }
 
-            var property = await _dataContext.Properties
+            Property property = await _dataContext.Properties
                 .Include(p => p.Owner)
                 .Include(p => p.PropertyType)
                 .FirstOrDefaultAsync(p => p.Id == id.Value);
@@ -167,7 +166,7 @@ namespace MyLeasing.Web.Controllers
                 return NotFound();
             }
 
-            var view = _converterHelper.ToPropertyViewModel(property);
+            PropertyViewModel view = _converterHelper.ToPropertyViewModel(property);
             return View(view);
         }
 
@@ -176,7 +175,7 @@ namespace MyLeasing.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var property = await _converterHelper.toPropertyAsync(model, true);
+                Property property = await _converterHelper.toPropertyAsync(model, false);
                 _dataContext.Properties.Update(property);
                 await _dataContext.SaveChangesAsync();
                 return RedirectToAction(nameof(MyProperties));
@@ -195,7 +194,7 @@ namespace MyLeasing.Web.Controllers
                 return NotFound();
             }
 
-            var property = await _dataContext.Properties
+            Property property = await _dataContext.Properties
                 .Include(o => o.Owner)
                 .ThenInclude(o => o.User)
                 .Include(o => o.Contracts)
@@ -220,13 +219,13 @@ namespace MyLeasing.Web.Controllers
                 return NotFound();
             }
 
-            var property = await _dataContext.Properties.FindAsync(id.Value);
+            Property property = await _dataContext.Properties.FindAsync(id.Value);
             if (property == null)
             {
                 return NotFound();
             }
 
-            var view = new PropertyImageViewModel
+            PropertyImageViewModel view = new PropertyImageViewModel
             {
                 Id = property.Id
             };
@@ -239,19 +238,19 @@ namespace MyLeasing.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var path = string.Empty;
+                string path = string.Empty;
 
                 if (view.ImageFile != null && view.ImageFile.Length > 0)
                 {
-                    var guid = Guid.NewGuid().ToString();
-                    var file = $"{guid}.jpg";
+                    string guid = Guid.NewGuid().ToString();
+                    string file = $"{guid}.jpg";
 
                     path = Path.Combine(
                         Directory.GetCurrentDirectory(),
                         "wwwroot\\images\\Properties",
                         file);
 
-                    using (var stream = new FileStream(path, FileMode.Create))
+                    using (FileStream stream = new FileStream(path, FileMode.Create))
                     {
                         await view.ImageFile.CopyToAsync(stream);
                     }
@@ -259,7 +258,7 @@ namespace MyLeasing.Web.Controllers
                     path = $"~/images/Properties/{file}";
                 }
 
-                var propertyImage = new PropertyImage
+                PropertyImage propertyImage = new PropertyImage
                 {
                     ImageUrl = path,
                     Property = await _dataContext.Properties.FindAsync(view.Id)
@@ -281,7 +280,7 @@ namespace MyLeasing.Web.Controllers
                 return NotFound();
             }
 
-            var propertyImage = await _dataContext.PropertyImages
+            PropertyImage propertyImage = await _dataContext.PropertyImages
                 .Include(pi => pi.Property)
                 .FirstOrDefaultAsync(pi => pi.Id == id.Value);
             if (propertyImage == null)
@@ -302,7 +301,7 @@ namespace MyLeasing.Web.Controllers
                 return NotFound();
             }
 
-            var property = await _dataContext.Properties
+            Property property = await _dataContext.Properties
                 .Include(p => p.Owner)
                 .Include(p => p.Contracts)
                 .FirstOrDefaultAsync(pi => pi.Id == id.Value);
@@ -343,7 +342,7 @@ namespace MyLeasing.Web.Controllers
                 return NotFound();
             }
 
-            var contract = await _dataContext.Contracts
+            Contract contract = await _dataContext.Contracts
                 .Include(c => c.Owner)
                 .ThenInclude(o => o.User)
                 .Include(c => c.Lessee)
