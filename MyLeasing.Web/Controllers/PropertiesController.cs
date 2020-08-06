@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using MyLeasing.Web.Data;
 using MyLeasing.Web.Data.Entities;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace MyLeasing.Web.Controllers
@@ -16,13 +15,16 @@ namespace MyLeasing.Web.Controllers
             _context = context;
         }
 
-        // GET: Properties
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _context.Properties.ToListAsync());
+            return View(_context.Properties
+                .Include(p     => p.PropertyType)
+                .Include(p     => p.PropertyImages)
+                .Include(p     => p.Contracts)
+                .Include(p     => p.Owner)
+                .ThenInclude(o => o.User));
         }
 
-        // GET: Properties/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -30,115 +32,21 @@ namespace MyLeasing.Web.Controllers
                 return NotFound();
             }
 
-            Property @property = await _context.Properties.FirstOrDefaultAsync(m => m.Id == id);
-
-            if (@property == null)
-            {
-                return NotFound();
-            }
-
-            return View(@property);
-        }
-
-        // GET: Properties/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Neighborhood,Address,Price,SquareMeters,Rooms,Stratum,HasParkingLot,IsAvailable,Remarks")] Property @property)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(@property);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(@property);
-        }
-
-        // GET: Properties/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            Property @property = await _context.Properties.FindAsync(id);
-            if (@property == null)
-            {
-                return NotFound();
-            }
-            return View(@property);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Neighborhood,Address,Price,SquareMeters,Rooms,Stratum,HasParkingLot,IsAvailable,Remarks")] Property @property)
-        {
-            if (id != @property.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(@property);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!PropertyExists(@property.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(@property);
-        }
-
-        // GET: Properties/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            Property @property = await _context.Properties
+            Property property = await _context.Properties
+                .Include(o             => o.Owner)
+                .ThenInclude(o         => o.User)
+                .Include(o             => o.Contracts)
+                .ThenInclude(c         => c.Lessee)
+                .ThenInclude(l         => l.User)
+                .Include(o             => o.PropertyType)
+                .Include(p             => p.PropertyImages)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (@property == null)
+            if (property == null)
             {
                 return NotFound();
             }
 
-            return View(@property);
-        }
-
-        // POST: Properties/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            Property @property = await _context.Properties.FindAsync(id);
-            _context.Properties.Remove(@property);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool PropertyExists(int id)
-        {
-            return _context.Properties.Any(e => e.Id == id);
+            return View(property);
         }
     }
 }
